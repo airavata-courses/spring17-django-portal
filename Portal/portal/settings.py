@@ -14,6 +14,11 @@ import os
 
 from configparser import RawConfigParser
 
+from thrift import Thrift
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+from thrift.protocol import TBinaryProtocol
+
 config=RawConfigParser()
 config.read('config.ini')
 
@@ -33,6 +38,13 @@ SECRET_KEY = config.get('default','SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
+TRANSPORT = TSocket.TSocket(config.get('thrift','ADDRESS'), config.get('thrift','PORT'))
+TRANSPORT = TTransport.TBufferedTransport(TRANSPORT)
+PROTOCOL = TBinaryProtocol.TBinaryProtocol(TRANSPORT)
+
+TRANSPORT.open()
 
 
 # Application definition
@@ -90,6 +102,8 @@ DATABASES = {
         'PORT': config.get(DATABASE_SECTION, 'DATABASE_PORT'),
     }
 }
+
+
 
 
 
