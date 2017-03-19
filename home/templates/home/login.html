@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="{% static 'js/app.js' %}"></script>
+</head>
+<body>
+    <form id="loginForm" class="form-horizontal" method="post" action="/auth/login/">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="username">User ID: </label>
+            <input class="col-sm-3" type="text" class="form-control" name="username" id="username">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="password">Password: </label>
+            <input class="col-sm-3" type="password" class="form-control" name="password" id="password">
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-3">
+                <input type="submit" class="btn btn-default" value="Login">
+            </div>
+        </div>
+    </form>
+</body>
+</html>

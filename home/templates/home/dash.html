@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="{% static 'js/app.js' %}"></script>
+</head>
+<body>
+    <div class="tab">
+        <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Home')">Home</a>
+        <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'App1')">First Application</a>
+        <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'App2')">Second Application</a>
+        <form id="logoutForm" action="/auth/logout/"><a href="javascript:void(0)" class="tablinks" onclick="document.getElementById('logoutForm').submit()">Logout</a></form>
+    </div>
+
+    <div id="Home" class="tabcontent">
+      <h3>Home page</h3>
+    </div>
+
+    <div id="App1" class="tabcontent">
+      <h3>First Application</h3>
+    </div>
+
+    <div id="App2" class="tabcontent">
+      <h3>Second Application</h3>
+    </div>
+</body>
+</html>

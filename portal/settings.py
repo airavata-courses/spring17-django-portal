@@ -14,26 +14,24 @@ import os
 
 from configparser import RawConfigParser
 
-config=RawConfigParser()
+config = RawConfigParser()
 config.read('config.ini')
 
-DATABASE_SECTION='database'
+DATABASE_SECTION = 'database'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config.get('default','SECRET_KEY')
+SECRET_KEY = config.get('default', 'SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -51,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -77,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portal.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 DATABASES = {
@@ -90,8 +87,6 @@ DATABASES = {
         'PORT': config.get(DATABASE_SECTION, 'DATABASE_PORT'),
     }
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -111,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -125,8 +119,22 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_FINDERS = ['django.contrib.staticfiles.finders.FileSystemFinder',
+                       'django.contrib.staticfiles.finders.AppDirectoriesFinder', ]
+
+# OAuth tokens
+
+IDP_CLIENT_ID = 'testclient'
+IDP_CLIENT_SECRET = '1854e4ea-672c-4f4c-9404-ccb95ff8b569'
+IDP_AUTHORIZE_URL = 'https://149.165.156.62:8443/auth/realms/airavata/protocol/openid-connect/auth'
+IDP_TOKEN_URL = 'https://149.165.156.62:8443/auth/realms/airavata/protocol/openid-connect/token'
+IDP_USERINFO_URL = 'https://149.165.156.62:8443/auth/realms/airavata/protocol/openid-connect/userinfo'
+IDP_VERIFY_SSL = False
+
+LOGIN_URL = '/auth/login'
+LOGIN_REDIRECT_URL = '/home/home.html'
