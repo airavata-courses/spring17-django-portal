@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     url(r'^login/', views.loginuser, name='loginuser'),
-    url(r'^logout/', views.logoutuser, name='logoutuser'),
+    url(r'^logout/', views.logout_user, name='logoutuser'),
     url(r'^validate/', views.get_token, name='validateCode'),
 ]

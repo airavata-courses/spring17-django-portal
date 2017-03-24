@@ -7,7 +7,6 @@ import requests
 
 def dashboard(request, username=None):
     s = requests.Session()
-    print('Request to home page with token - ', s.cookies.get("id_token"))
     return render(request, 'home/dash.html', {"username": username})
 
 

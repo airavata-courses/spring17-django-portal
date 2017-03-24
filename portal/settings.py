@@ -129,12 +129,14 @@ STATICFILES_FINDERS = ['django.contrib.staticfiles.finders.FileSystemFinder',
 
 # OAuth tokens
 
-IDP_CLIENT_ID = 'testclient'
-IDP_CLIENT_SECRET = '1854e4ea-672c-4f4c-9404-ccb95ff8b569'
-IDP_AUTHORIZE_URL = 'https://149.165.156.62:8443/auth/realms/airavata/protocol/openid-connect/auth'
-IDP_TOKEN_URL = 'https://149.165.156.62:8443/auth/realms/airavata/protocol/openid-connect/token'
-IDP_USERINFO_URL = 'https://149.165.156.62:8443/auth/realms/airavata/protocol/openid-connect/userinfo'
+IDP_CLIENT_ID = 'django'
+IDP_CLIENT_SECRET = 'bbc52fd5-4d15-44f9-8a03-83cd2451ed46'
+IDP_AUTHORIZE_URL = 'http://localhost:8080/auth/realms/airavata/protocol/openid-connect/auth'
+IDP_TOKEN_URL = 'http://localhost:8080/auth/realms/airavata/protocol/openid-connect/token/'
+IDP_USERINFO_URL = 'http://localhost:8080/auth/realms/airavata/protocol/openid-connect/userinfo'
+IDP_END_SESSION_URL = 'http://localhost:8080/auth/realms/airavata/protocol/openid-connect/logout'
 IDP_VERIFY_SSL = False
 
+HOST_ADDRESS = 'http://localhost:8000/'
 LOGIN_URL = '/auth/login'
 LOGIN_REDIRECT_URL = '/home/home.html'
