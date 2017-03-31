@@ -32,27 +32,25 @@ def get_token(request):
         "client_secret": settings.IDP_CLIENT_SECRET
     }
 
-    response = requests.post(url, data=data)
-    if response.status_code != 200:
+    token_resp = requests.post(url, data=data)
+    if token_resp.status_code != 200:
         print("Error while getting token")
 
-    json_resp = response.json()
-    id_token = json_resp['id_token']
-    access_token = json_resp['access_token']
+    json_token_resp = token_resp.json()
+    id_token = json_token_resp['id_token']
+    access_token = json_token_resp['access_token']
 
-    print("id_token =", id_token)
-    print("access_token =", access_token)
     print("Putting id_token and access_token in cache")
     cache.set('id_token', id_token, settings.CACHE_MIDDLEWARE_SECONDS)
     cache.set('access_token', access_token, settings.CACHE_MIDDLEWARE_SECONDS)
 
-    userinfo_res = requests.get(settings.IDP_USERINFO_URL, headers={"Authorization":"Bearer " + json_resp['access_token']})
+    userinfo_resp = requests.get(settings.IDP_USERINFO_URL, headers={"Authorization":"Bearer " + access_token})
 
-    if userinfo_res.status_code != 200:
+    if userinfo_resp.status_code != 200:
         print("Error while getting user info")
 
-    userinfo_json_resp = userinfo_res.json()
-    user_id = userinfo_json_resp['preferred_username']
+    json_userinfo_resp = userinfo_resp.json()
+    user_id = json_userinfo_resp['preferred_username']
 
     print("Logged in ",user_id, " !!")
     cache.set('user_id',user_id, settings.CACHE_MIDDLEWARE_SECONDS)
