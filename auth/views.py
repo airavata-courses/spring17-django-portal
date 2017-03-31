@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
+from django.core.cache import cache
 import requests, json
 
 
@@ -20,7 +21,8 @@ def loginuser(request):
 def get_token(request):
     client_id = settings.IDP_CLIENT_ID
     code = request.GET.get('code')
-    print('Putting Code : ', code, ' in session')
+    print('Putting Code : ', code, ' in cache')
+    cache.set('auth_code',code,settings.CACHE_MIDDLEWARE_SECONDS)
     url = settings.IDP_TOKEN_URL
     data = {
         "grant_type":"authorization_code",
@@ -35,7 +37,25 @@ def get_token(request):
         print("Error while getting token")
 
     json_resp = response.json()
-    print("id_token =", json_resp['id_token'])
+    id_token = json_resp['id_token']
+    access_token = json_resp['access_token']
+
+    print("id_token =", id_token)
+    print("access_token =", access_token)
+    print("Putting id_token and access_token in cache")
+    cache.set('id_token', id_token, settings.CACHE_MIDDLEWARE_SECONDS)
+    cache.set('access_token', access_token, settings.CACHE_MIDDLEWARE_SECONDS)
+
+    userinfo_res = requests.get(settings.IDP_USERINFO_URL, headers={"Authorization":"Bearer " + json_resp['access_token']})
+
+    if userinfo_res.status_code != 200:
+        print("Error while getting user info")
+
+    userinfo_json_resp = userinfo_res.json()
+    user_id = userinfo_json_resp['preferred_username']
+
+    print("Logged in ",user_id, " !!")
+    cache.set('user_id',user_id, settings.CACHE_MIDDLEWARE_SECONDS)
     return redirect('/home/dashboard/')
 
 

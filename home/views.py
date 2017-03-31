@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import User,Credential
+from django.core.cache import cache
 import requests
 # Create your views here.
 
 
 def dashboard(request, username=None):
     s = requests.Session()
-    return render(request, 'home/dash.html', {"username": username})
+    user_id = cache.get('user_id')
+    id_token = cache.get('id_token')
+    return render(request, 'home/dash.html', {"user_id": user_id, "id_token": id_token})
 
 
 def loginpage(request):
