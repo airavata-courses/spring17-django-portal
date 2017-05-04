@@ -34,9 +34,12 @@ html, body{
 function tab_click_handler(tab_url) {
     var tab_frame=document.querySelector('#mainTab');
     tab_frame.src=tab_url;
+};
+function app_loading(){
+    document.querySelector('.tabs button').click();
 }
 </script>
-<body >
+<body onload="app_loading()">
 <div class="tabs">
     {% for tab in tab_list %}
     <button onclick="tab_click_handler('{{ tab.url }}')">{{ tab.name }}</button>

@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^tab1/', include('tab1.urls')),
     url(r'^tab2/', include('tab2.urls')),
     url(r'^main/', include('main.urls')),
+
 ]

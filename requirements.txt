@@ -1,0 +1,6 @@
+django
+redis
+django-redis
+django-redis-cache
+wsgiserver
+psycopg2

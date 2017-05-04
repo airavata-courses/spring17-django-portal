@@ -11,8 +11,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-import django.contrib.sessions.backends.db
 import random
+import server
+
+import django.contrib.sessions.backends.db
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -49,9 +52,13 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apache.airavata.django.cache.UpdateCacheMiddleware',
+    'apache.airavata.django.cache.FetchFromCacheMiddleware',
 ]
+
 
 ROOT_URLCONF = 'PortalPOC.urls'
 
@@ -79,8 +86,12 @@ WSGI_APPLICATION = 'PortalPOC.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'starwars',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -122,8 +133,30 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-SESSION_ENGINE='apache.airavata.django.reddis.sessions.redis_sessions'
+#SESSION_ENGINE='apache.airavata.django.reddis.sessions.redis_sessions'
+SESSION_ENGINE='django.contrib.sessions.backends.cache'
 
 REDIS_HOST='localhost'
 REDIS_PORT=6379
 INSTANCE_NAME='Portal'+str(random.randrange(1500))
+
+if server.CACHE_ENABLED:
+    print("Cache Enabled")
+    CACHES = {
+        "default": {
+            # "BACKEND": "django_redis.cache.RedisCache",
+            # "LOCATION": "redis://127.0.0.1:6379/1",
+            # "OPTIONS": {
+            #    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # },
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': 'localhost:6379',
+            "KEY_PREFIX": 'server1',
+
+        }
+    }
+
+
+LOGIN_URL='login_view'
+
+SESSION_COOKIE_SECURE=True

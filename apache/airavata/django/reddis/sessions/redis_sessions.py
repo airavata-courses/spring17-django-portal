@@ -45,11 +45,9 @@ class RedisIterator:
 class SessionStore(SessionBase):
 
     def delete(self, session_key=None):
-        pass
+        return self._redis_client.hdel(DJANGO_SESSION,session_key)
 
-    @classmethod
-    def clear_expired(cls):
-        pass
+
 
     def save(self, must_create=False):
         pass
@@ -61,12 +59,11 @@ class SessionStore(SessionBase):
         pass
 
     def __init__(self,session_key=None):
-        super(SessionStore).__init__(session_key)
+        super().__init__(session_key)
         host = getattr(settings, 'REDIS_HOST', None)
         port = getattr(settings, 'REDIS_PORT', None)
         name = getattr(settings, 'INSTANCE_NAME', str(uuid.uuid4()))
         self._redis_client = redis.StrictRedis(host=host, port=port)
-        self._redis_client.hscan_iter()
 
 
 

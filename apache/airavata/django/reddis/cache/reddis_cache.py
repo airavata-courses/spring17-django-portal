@@ -8,6 +8,7 @@ REDIS_CACHE_NAME="redis_cache"
 class ReddisCache(BaseCache):
 
     def __init__(self,params):
+
         super(ReddisCache,self).__init__(params)
         host=getattr(settings,'REDIS_HOST',None)
         port=getattr(settings,'REDIS_PORT',None)

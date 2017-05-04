@@ -4,20 +4,20 @@ python:
 
 branches:
   only:
-    - master
+    - feature-microservice-B
 
 install:
-   - pip install -r "requirements.txt"
+   - pip install -r "MicroserviceB/requirements.txt"
 
 script: 
-   - python -m unittest discover -p "*Test.py"
+   - cd "MicroserviceB" && python -m unittest discover -p "*Test.py"
 
 
 before_deploy:
   - cd ..
-  - tar -cvzf portal.tar.gz * || true
+  - tar -cvzf omniDataIngestor.tar.gz MicroserviceB scripts appspec.yml Dockerfile || true
   - mkdir -p "s3_upload_dir"
-  - mv portal.tar.gz s3_upload_dir/portal.tar.gz || true
+  - mv omniDataIngestor.tar.gz s3_upload_dir/omniDataIngestor.tar.gz || true
 
 deploy:
   - provider: s3
@@ -30,17 +30,17 @@ deploy:
     detect_encoding: true
     skip_cleanup: true
     on:
-      repo: airavata-courses/spring17-django-portal
-      branch: master
+      repo: airavata-courses/TeamOmni
+      branch: feature-microservice-B
   - provider: codedeploy
     access_key_id: $ARTIFACTS_KEY
     secret_access_key: $ARTIFACTS_SECRET
     bucket: sga-team-omni
-    key: portal.tar.gz
+    key: omniDataIngestor.tar.gz
     bundle_type: tgz
     application: SGA-TeamOmni
     deployment_group: SGA-TeamOmni
     region: us-east-1
     on:
-      repo: airavata-courses/spring17-django-portal
-      branch: master
+      repo: airavata-courses/TeamOmni
+      branch: feature-microservice-B

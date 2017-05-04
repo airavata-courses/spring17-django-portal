@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create User</title>
+</head>
+<style>
+    .main{
+        width:40%;
+        margin-top: 20%;
+        margin-left: 20%;
+        border-style: solid;
+        border-width: 5px;
+        border-radius: 30px;
+    }
+.main > div,button{
+    margin-top:20px;
+    margin-bottom: 10px;
+    margin-left:20%;
+    margin-rigth:20%;
+    max-width:100%;
+
+}
+.main > div > label{
+    display:inline-block;
+    width:20%;
+}
+</style>
+<script>
+    function submit_login(){
+        var user=document.querySelector('#user').value;
+        var pass=document.querySelector("#pass").value;
+        var name=document.querySelector("#name").value;
+        var form_data=new FormData();
+        form_data.append('user',user);
+        form_data.append('pass',pass);
+        form_data.append('name',name);
+        var login_request=new XMLHttpRequest();
+        login_request.onreadystatechange=function(){
+            if(login_request.readyState == XMLHttpRequest.DONE && login_request.status == 200 ){
+                var result=JSON.parse(login_request.responseText);
+                if(result.status == true){
+                    alert("User "+ user+" has been created");
+                    window.location="{% url 'login_view'%}";
+                }else{
+                    alert("User Creation Failed: "+ user);
+                }
+            }
+        };
+        login_request.open('POST',"{% url 'create_user'%}",true);
+        login_request.send(form_data);
+    }
+</script>
+<body>
+    <div id="main" class="main">
+        <div>
+            <label>Name</label>
+            <input type="text" id="name">
+        </div>
+        <div>
+            <label>User Name</label>
+            <input type="text" id="user">
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" id="pass">
+        </div>
+
+        <button type="submit" style="width:37%;" onclick="submit_login()">Submit</button>
+    </div>
+</body>
+</html>
